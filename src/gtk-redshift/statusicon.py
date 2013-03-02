@@ -43,6 +43,10 @@ import utils
 _ = gettext.gettext
 
 
+def sigterm_handler(signal, frame):
+    sys.exit()
+
+
 class RedshiftStatusIcon(object):
     def __init__(self, args=[]):
         # Initialize state variables
@@ -50,6 +54,8 @@ class RedshiftStatusIcon(object):
         self._temperature = 0
         self._period = 'Unknown'
         self._location = (0.0, 0.0)
+
+        signal.signal(signal.SIGTERM, sigterm_handler)
 
         # Start redshift with arguments
         args.insert(0, os.path.join(defs.BINDIR, 'redshift'))
